@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - psql-data-persist:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=storefront2
+      - POSTGRES_USER=mohammad
+      - POSTGRES_PASSWORD=12345678
+    ports:
+      - '5433:5432'
+
+volumes:
+  psql-data-persist:
