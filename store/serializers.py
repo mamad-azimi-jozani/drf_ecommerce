@@ -14,3 +14,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_price_with_tax(self, obj: Product):
         return obj.unit_price * Decimal(1.1)
+
+    # def validate(self, data):
+    #     if data['title'] == data['slug']:
+    #         raise serializers.ValidationError('title and slug are the same!')
+    #     return data
