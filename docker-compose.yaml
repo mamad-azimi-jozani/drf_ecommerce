@@ -3,7 +3,7 @@ services:
   db:
     image: postgres:13-alpine
     volumes:
-      - psql-data-persist:/var/lib/postgresql/data
+      - psql:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=storefront2
       - POSTGRES_USER=mohammad
@@ -12,4 +12,4 @@ services:
       - '5433:5432'
 
 volumes:
-  psql-data-persist:
+  psql:
