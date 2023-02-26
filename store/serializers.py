@@ -3,6 +3,10 @@ from .models import *
 
 from decimal import Decimal
 
+from django.db.models import Count
+
+
+
 class ProductSerializer(serializers.ModelSerializer):
     price_with_tax = serializers.SerializerMethodField(
         method_name='get_price_with_tax'
@@ -19,3 +23,13 @@ class ProductSerializer(serializers.ModelSerializer):
     #     if data['title'] == data['slug']:
     #         raise serializers.ValidationError('title and slug are the same!')
     #     return data
+
+
+class CollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection
+        fields = ['id', 'title', 'products_count']
+
+    products_count = serializers.IntegerField()
+
+
