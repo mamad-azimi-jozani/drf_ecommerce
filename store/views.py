@@ -5,6 +5,8 @@ from .models import *
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from rest_framework.mixins import ListModelMixin, CreateModelMixin
+from rest_framework.generics import ListCreateAPIView
 from rest_framework import status
 
 from .serializers import *
@@ -13,17 +15,11 @@ from .serializers import *
 
 
 
-class ProductList(APIView):
-    def get(self, request):
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class ProductList(ListCreateAPIView):
+    queryset = Product.objects.select_related('collection').all()
+    serializer_class = ProductSerializer
 
-    def post(self, request):
-        serializer = ProductSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class ProductDetail(APIView):
     def get(self, request, id):
@@ -45,20 +41,10 @@ class ProductDetail(APIView):
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class CollectionList(ListCreateAPIView):
+    queryset = Collection.objects.annotate(products_count=Count('product')).all()
+    serializer_class = CollectionSerializer
 
-@api_view(['GET', "POST"])
-def collection_list(request):
-    if request.method == 'GET':
-        collections = Collection.objects.annotate(products_count=Count('product')).all()
-
-        serializer = CollectionSerializer(collections, many=True)
-        return Response(serializer.data)
-
-    if request.method == 'POST':
-        serializer = CollectionSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET', "PUT", "DELETE"])

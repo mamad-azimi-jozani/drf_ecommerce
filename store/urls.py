@@ -10,7 +10,7 @@ urlpatterns = [
     path('products/<int:id>/', ProductDetail.as_view(), name='product-detail'),
 
     # collection endpoint => /store/collections/
-    path('collections/', collection_list, name='collection-list'),
+    path('collections/', CollectionList.as_view(), name='collection-list'),
     path('collections/<int:id>/', collection_detail, name='collection-detail'),
 
 
