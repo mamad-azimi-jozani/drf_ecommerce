@@ -1,3 +1,7 @@
 django
 djangorestframework
 psycopg2_binary
+pytest
+pytest-django
+factory_boy
+pytest_factoryboy
