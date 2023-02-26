@@ -6,8 +6,8 @@ app_name = 'product'
 
 urlpatterns = [
     # products endpoint => /store/products/
-    path('products/', product_list, name='product-lists'),
-    path('products/<int:id>/', product_detail, name='product-detail'),
+    path('products/', ProductList.as_view(), name='product-lists'),
+    path('products/<int:id>/', ProductDetail.as_view(), name='product-detail'),
 
     # collection endpoint => /store/collections/
     path('collections/', collection_list, name='collection-list'),
