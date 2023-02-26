@@ -7,21 +7,14 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 
 from .serializers import *
 
 
 
-
-
-class ProductList(ListCreateAPIView):
-    queryset = Product.objects.select_related('collection').all()
-    serializer_class = ProductSerializer
-
-
-
-class ProductDetail(RetrieveUpdateDestroyAPIView):
+class ProductViewset(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -34,15 +27,9 @@ class ProductDetail(RetrieveUpdateDestroyAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class CollectionList(ListCreateAPIView):
+class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.annotate(products_count=Count('product')).all()
     serializer_class = CollectionSerializer
 
-
-class CollectionDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Collection.objects.annotate(
-        products_count=Count('product')
-    ).all()
-    serializer_class = CollectionSerializer
 
 
