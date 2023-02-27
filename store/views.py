@@ -29,4 +29,10 @@ class CollectionViewSet(ModelViewSet):
     serializer_class = CollectionSerializer
 
 
+class ReviewViewSet(ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+
+
 
