@@ -14,17 +14,14 @@ from .serializers import *
 
 
 
-class ProductViewset(ModelViewSet):
+class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-    def delete(self, request, pk):
-        product = get_object_or_404(Product, pk=pk)
-        if product.orderitem_set.count() > 0:
-            return Response({'error': 'product can not be deleted'}
-                            , status=status.HTTP_400_BAD_REQUEST)
-        product.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def perform_destroy(self, instance):
+        if OrderItem.objects.filter(product_id=self.kwargs['pk']).count() > 0:
+            raise serializers.ValidationError({'error': 'product can not be deleted'})
+        instance.delete()
 
 
 class CollectionViewSet(ModelViewSet):

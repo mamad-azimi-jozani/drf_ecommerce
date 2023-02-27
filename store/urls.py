@@ -1,18 +1,17 @@
-from django.urls import path
-from .views import *
+from django.urls import path, include
+from . import views
+
+from rest_framework.routers import SimpleRouter
+
+router = SimpleRouter()
+router.register('products', viewset=views.ProductViewSet)
+router.register('collection', viewset=views.CollectionViewSet)
+
 
 
 app_name = 'product'
 
 urlpatterns = [
-
-    # products endpoint => /store/products/
-    path('products/', ProductList.as_view(), name='product-lists'),
-    path('products/<int:pk>/', ProductDetail.as_view(), name='product-detail'),
-
-    # collection endpoint => /store/collections/
-    path('collections/', CollectionList.as_view(), name='collection-list'),
-    path('collections/<int:pk>/', CollectionDetail.as_view(), name='collection-detail'),
-
-
+    # router for products and collections
+    path('', include(router.urls))
 ]
