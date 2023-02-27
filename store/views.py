@@ -30,8 +30,19 @@ class CollectionViewSet(ModelViewSet):
 
 
 class ReviewViewSet(ModelViewSet):
-    queryset = Review.objects.all()
+    # queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        return Review.objects.filter(product_id=self.kwargs.get('product_pk'))
+
+    def perform_create(self, serializer):
+        try:
+            serializer.save(product_id=self.kwargs['product_pk'])
+        except:
+            raise serializers.ValidationError({'error': 'product is not present :|'})
+
+
 
 
 
