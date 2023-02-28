@@ -5,6 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 
 
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 
 from .serializers import *
 
@@ -15,9 +16,10 @@ from .filters import ProductFilter
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['collection_id']
     filterset_class = ProductFilter
+    ordering_fields = ['unit_price']
 
 
     def perform_destroy(self, instance):
