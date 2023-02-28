@@ -1,14 +1,8 @@
-from django.shortcuts import get_object_or_404
-
 from .models import *
 
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.views import APIView
-from rest_framework.mixins import ListModelMixin, CreateModelMixin
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import status
+
 
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -25,13 +19,11 @@ class ProductViewSet(ModelViewSet):
     filterset_fields = ['collection_id']
     filterset_class = ProductFilter
 
-    def delete(self):
-        pass
 
-    # def perform_destroy(self, instance):
-    #     if OrderItem.objects.filter(product_id=self.kwargs['pk']).count() > 0:
-    #         raise serializers.ValidationError({'error': 'product can not be deleted'})
-    #     instance.delete()
+    def perform_destroy(self, instance):
+        if OrderItem.objects.filter(product_id=self.kwargs['pk']).count() > 0:
+            raise serializers.ValidationError({'error': 'product can not be deleted'})
+        instance.delete()
 
 
 class CollectionViewSet(ModelViewSet):
