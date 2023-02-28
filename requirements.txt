@@ -6,3 +6,4 @@ pytest-django
 factory_boy
 pytest_factoryboy
 drf-nested-routers
+django-filter
