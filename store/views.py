@@ -1,4 +1,5 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework import mixins
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.filters import OrderingFilter
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -41,6 +42,14 @@ class ReviewViewSet(ModelViewSet):
             serializer.save(product_id=self.kwargs['product_pk'])
         except:
             raise serializers.ValidationError({'error': 'product is not present :|'})
+
+
+class CartViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.DestroyModelMixin,
+                   GenericViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
 
 
 
